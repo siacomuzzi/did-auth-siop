@@ -201,7 +201,8 @@ export class PresentationExchange {
 
   private static assertValidPresentationDefinition(presentationDefinition: IPresentationDefinition) {
     const validationResult = new PEX().validateDefinition(presentationDefinition);
-    if (validationResult[0].message != 'ok') {
+    // FIXME: update pex to allow simple strings as schema.uri
+    if (validationResult[0].message != 'ok' && validationResult[0].message !== 'schema should have valid URI') {
       throw new Error(`${SIOPErrors.REQUEST_CLAIMS_PRESENTATION_DEFINITION_NOT_VALID}`);
     }
   }

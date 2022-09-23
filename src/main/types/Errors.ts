@@ -35,7 +35,7 @@ enum SIOPErrors {
   NO_NONCE = 'No nonce found in JWT payload',
   NO_REFERENCE_URI = 'referenceUri must be defined when REFERENCE option is used',
   NO_DID_METHOD_FOUND = 'No did method found.',
-  NO_SELFISSUED_ISS = 'The Response Token Issuer Claim (iss) MUST be https://self-isued.me',
+  NO_SELFISSUED_ISS = 'The Response Token Issuer Claim (iss) MUST be https://self-isued.me*',
   NO_SUB_TYPE = 'No or empty sub_type found in JWT payload',
   REGISTRATION_NOT_SET = 'Registration metadata not set.',
   REQUEST_CLAIMS_PRESENTATION_DEFINITION_BY_REF_AND_VALUE_NON_EXCLUSIVE = "Request claims can't have both 'presentation_definition' and 'presentation_definition_uri'",

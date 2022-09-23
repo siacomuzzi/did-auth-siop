@@ -881,6 +881,9 @@ export const AuthenticationRequestOptsSchema = {
         },
         "registrationBy": {
           "$ref": "#/definitions/RegistrationType"
+        },
+        "clientName": {
+          "type": "string"
         }
       },
       "required": [

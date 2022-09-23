@@ -1,4 +1,4 @@
-import { createJWT, decodeJWT, EdDSASigner, ES256KSigner, hexToBytes, JWTHeader, JWTOptions, JWTPayload, JWTVerifyOptions, verifyJWT } from 'did-jwt';
+import { createJWT, decodeJWT, EdDSASigner, ES256KSigner, hexToBytes, JWTHeader, JWTOptions, JWTPayload, JWTVerifyOptions/*, verifyJWT*/ } from 'did-jwt';
 import { JWTDecoded } from 'did-jwt/lib/JWT';
 import { Resolvable } from 'did-resolver';
 
@@ -45,8 +45,13 @@ import { isEd25519DidKeyMethod, isEd25519JWK, postWithBearerToken } from './';
  *  @param    {String}            options.callbackUrl   callback url in JWT
  *  @return   {Promise<Object, Error>}                  a promise which resolves with a response object or rejects with an error
  */
-export async function verifyDidJWT(jwt: string, resolver: Resolvable, options: JWTVerifyOptions): Promise<VerifiedJWT> {
-  return verifyJWT(jwt, { resolver, ...options });
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function verifyDidJWT(jwt: string, _resolver: Resolvable, _options: JWTVerifyOptions): Promise<VerifiedJWT> {
+  // FIXME: skip verification until adding support for SIOPv2 ID1 in did-jwt
+  // See https://github.com/decentralized-identity/did-jwt/issues/250
+  const { payload } = decodeJWT(jwt); 
+  return { payload, didResolutionResult: null, issuer: payload.iss, signer: null, jwt };
+  // return verifyJWT(jwt, { resolver, ...options });
 }
 
 /**

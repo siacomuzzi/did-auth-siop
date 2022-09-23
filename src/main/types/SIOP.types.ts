@@ -351,6 +351,7 @@ export interface RPRegistrationMetadataOpts {
   // subjectIdentifiersSupported: SubjectIdentifierType[] | SubjectIdentifierType;
   // didMethodsSupported?: string[] | string;
   // credentialFormatsSupported: CredentialFormat[] | CredentialFormat;
+  clientName: string;
 }
 
 export interface RPRegistrationMetadataPayload {
@@ -362,6 +363,7 @@ export interface RPRegistrationMetadataPayload {
   subject_syntax_types_supported: string[];
   subject_types_supported: SubjectType[];
   vp_formats: Format;
+  client_name: string;
 }
 
 export interface CommonSupportedMetadata {
@@ -624,6 +626,7 @@ export enum Schema {
 export enum ResponseIss {
   SELF_ISSUED_V1 = 'https://self-issued.me',
   SELF_ISSUED_V2 = 'https://self-issued.me/v2',
+  SELF_ISSUED_V2_OIDC_VC = 'https://self-issued.me/v2/openid-vc',
 }
 
 export const isInternalSignature = (object: InternalSignature | ExternalSignature | SuppliedSignature | NoSignature): object is InternalSignature =>

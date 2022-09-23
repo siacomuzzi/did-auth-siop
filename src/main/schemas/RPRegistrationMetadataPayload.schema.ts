@@ -49,6 +49,9 @@ export const RPRegistrationMetadataPayloadSchema = {
         },
         "vp_formats": {
           "$ref": "#/definitions/Format"
+        },
+        "client_name": {
+          "type": "string"
         }
       },
       "required": [

@@ -129,7 +129,7 @@ export default class AuthenticationResponse {
       audience: verifyOpts.audience,
     });
 
-    const issuerDid = getIssuerDidFromPayload(payload);
+    const issuerDid = getIssuerDidFromPayload(payload, header);
     if (verifyOpts.verification.checkLinkedDomain && verifyOpts.verification.checkLinkedDomain !== CheckLinkedDomain.NEVER) {
       await validateLinkedDomainWithDid(issuerDid, verifyOpts.verifyCallback, verifyOpts.verification.checkLinkedDomain);
     } else if (!verifyOpts.verification.checkLinkedDomain) {
@@ -137,7 +137,9 @@ export default class AuthenticationResponse {
     }
     const verPayload = verifiedJWT.payload as AuthenticationResponsePayload;
     assertValidResponseJWT({ header, verPayload: verPayload, audience: verifyOpts.audience });
-    await assertValidVerifiablePresentations(verifyOpts?.claims?.presentationDefinitions, verPayload);
+    
+    // FIXME: comment this part until we figure out how to validate vp_token (see https://identity.foundation/jwt-vc-presentation-profile/#structure-of-authentication-response)
+    //await assertValidVerifiablePresentations(verifyOpts?.claims?.presentationDefinitions, verPayload);
 
     const revocationVerification = verifyOpts.verification.revocationOpts
       ? verifyOpts.verification.revocationOpts.revocationVerification
@@ -164,7 +166,7 @@ function assertValidResponseJWT(opts: { header: JWTHeader; payload?: JWTPayload;
     throw new Error(SIOPErrors.BAD_PARAMS);
   }
   if (opts.payload) {
-    if (opts.payload.iss !== ResponseIss.SELF_ISSUED_V2) {
+    if (opts.payload.iss !== ResponseIss.SELF_ISSUED_V2 && opts.payload.iss !== ResponseIss.SELF_ISSUED_V2_OIDC_VC) {
       throw new Error(`${SIOPErrors.NO_SELFISSUED_ISS}, got: ${opts.payload.iss}`);
     }
   }
@@ -172,7 +174,7 @@ function assertValidResponseJWT(opts: { header: JWTHeader; payload?: JWTPayload;
   if (opts.verPayload) {
     if (!opts.verPayload.nonce) {
       throw Error(SIOPErrors.NO_NONCE);
-    } else if (!opts.verPayload.sub_type) {
+    } else if (!opts.verPayload.sub_type && opts.verPayload.iss !== ResponseIss.SELF_ISSUED_V2_OIDC_VC) {
       throw Error(SIOPErrors.NO_SUB_TYPE);
     } else if (!opts.verPayload.exp || opts.verPayload.exp < Date.now() / 1000) {
       throw Error(SIOPErrors.EXPIRED);
