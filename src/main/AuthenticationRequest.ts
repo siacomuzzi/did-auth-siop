@@ -69,7 +69,7 @@ export default class AuthenticationRequest {
    */
   static parseURI(uri: string): AuthenticationRequestPayload {
     // We strip the uri scheme before passing it to the decode function
-    return decodeUriAsJson(uri.replace(/^.*:\/\/\??/, '')) as AuthenticationRequestPayload;
+    return decodeUriAsJson(uri.replace(/^.*\?/, '')) as AuthenticationRequestPayload;
   }
 
   /**
@@ -223,7 +223,6 @@ async function createURIFromJWT(
         jwt,
       };
   }
-  throw new Error(SIOPErrors.REQUEST_OBJECT_TYPE_NOT_SET);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -55,13 +55,9 @@ export const RPRegistrationMetadataPayloadSchema = {
         }
       },
       "required": [
-        "id_token_signing_alg_values_supported",
-        "request_object_signing_alg_values_supported",
-        "response_types_supported",
-        "scopes_supported",
         "subject_syntax_types_supported",
-        "subject_types_supported",
-        "vp_formats"
+        "vp_formats",
+        "client_name"
       ],
       "additionalProperties": false
     },

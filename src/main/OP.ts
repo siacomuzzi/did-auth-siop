@@ -77,7 +77,7 @@ export class OP {
   }
 
   // TODO SK Can you please put some documentation on it?
-  public async submitAuthenticationResponse(verifiedJwt: AuthenticationResponseWithJWT): Promise<Response> {
+  public async submitAuthenticationResponse(verifiedJwt): Promise<Response> {
     if (
       !verifiedJwt ||
       (verifiedJwt.responseOpts.responseMode &&
@@ -85,7 +85,8 @@ export class OP {
     ) {
       throw new Error(SIOPErrors.BAD_PARAMS);
     }
-    return postAuthenticationResponseJwt(verifiedJwt.payload.aud, verifiedJwt.jwt);
+    //return postAuthenticationResponseJwt(verifiedJwt.payload.aud, verifiedJwt.jwt);
+    return postAuthenticationResponseJwt(verifiedJwt.url, verifiedJwt.jwt, verifiedJwt.vp_token, verifiedJwt.state);
   }
 
   /**

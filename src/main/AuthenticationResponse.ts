@@ -2,8 +2,8 @@ import { JWTHeader } from 'did-jwt';
 import { JWK } from 'jose';
 
 import AuthenticationRequest from './AuthenticationRequest';
-import { createDiscoveryMetadataPayload } from './AuthenticationResponseRegistration';
-import { PresentationExchange } from './PresentationExchange';
+//import { createDiscoveryMetadataPayload } from './AuthenticationResponseRegistration';
+//import { PresentationExchange } from './PresentationExchange';
 import {
   getIssuerDidFromPayload,
   getNonce,
@@ -28,12 +28,12 @@ import {
   isInternalVerification,
   isSuppliedSignature,
   JWTPayload,
-  PresentationDefinitionWithLocation,
+  //PresentationDefinitionWithLocation,
   PresentationLocation,
   ResponseIss,
   RevocationVerification,
   SIOPErrors,
-  SubjectIdentifierType,
+  //SubjectIdentifierType,
   SubjectSyntaxTypesSupportedValues,
   VerifiablePresentationPayload,
   VerifiedAuthenticationRequestWithJWT,
@@ -67,16 +67,30 @@ export default class AuthenticationResponse {
   static async createJWTFromVerifiedRequest(
     verifiedJwt: VerifiedAuthenticationRequestWithJWT,
     responseOpts: AuthenticationResponseOpts
-  ): Promise<AuthenticationResponseWithJWT> {
+  ): Promise<AuthenticationResponseWithJWT | any> {
     const payload = await createSIOPResponsePayload(verifiedJwt, responseOpts);
-    await assertValidVerifiablePresentations(verifiedJwt.presentationDefinitions, payload);
+    //await assertValidVerifiablePresentations(verifiedJwt.presentationDefinitions, payload);
     const jwt = await signDidJwtPayload(payload, responseOpts);
+    const vp_token = await signDidJwtPayload({
+      iss: responseOpts.did,
+      aud: verifiedJwt.payload.client_id,
+      nonce: verifiedJwt.payload.nonce,
+      vp: {
+          '@context': ['https://www.w3.org/2018/credentials/v1'],
+          type: ['VerifiablePresentation'],
+          verifiableCredential: responseOpts.vp[0].presentation.verifiableCredential,
+      },
+    }, {
+        signatureType: responseOpts.signatureType,
+    });
     return {
       jwt,
-      state: payload.state,
+      state: verifiedJwt.payload.state,
       nonce: payload.nonce,
       payload,
       responseOpts,
+      url: verifiedJwt.payload.redirect_uri,
+      vp_token,
     };
 
     // todo add uri generation support in separate method, like in the AuthRequest class
@@ -247,7 +261,7 @@ function extractPresentations(resOpts: AuthenticationResponseOpts) {
 async function createSIOPResponsePayload(
   verifiedJwt: VerifiedAuthenticationRequestWithJWT,
   resOpts: AuthenticationResponseOpts
-): Promise<AuthenticationResponsePayload> {
+): Promise<AuthenticationResponsePayload | any> {
   assertValidResponseOpts(resOpts);
   if (!verifiedJwt || !verifiedJwt.jwt) {
     throw new Error(SIOPErrors.VERIFY_BAD_PARAMS);
@@ -258,27 +272,43 @@ async function createSIOPResponsePayload(
 
   const state = resOpts.state || getState(verifiedJwt.payload.state);
   const nonce = verifiedJwt.payload.nonce || resOpts.nonce || getNonce(state);
-  const registration = createDiscoveryMetadataPayload(resOpts.registration);
+  //const registration = createDiscoveryMetadataPayload(resOpts.registration);
 
   //https://sphereon.atlassian.net/browse/VDX-140
   // *********************************************************************************
   // todo We are missing a wrapper object. Actually the current object is the id_token
   // *********************************************************************************
 
-  const { verifiable_presentations, vp_token } = extractPresentations(resOpts);
-  const authenticationResponsePayload: AuthenticationResponsePayload = {
-    iss: ResponseIss.SELF_ISSUED_V2,
+  const { /*verifiable_presentations, */vp_token } = extractPresentations(resOpts);
+  const presentation_submission = {
+    ...vp_token.presentation.presentation_submission,
+    descriptor_map: [{
+        path: '$',
+        id: vp_token.presentation.presentation_submission.descriptor_map[0].id,
+        format: 'jwt_vp',
+        path_nested: {
+            path: '$.verifiableCredential[0]',
+            id: vp_token.presentation.presentation_submission.descriptor_map[0].id,
+            format: 'jwt_vc',
+        }
+    }],
+};
+  const authenticationResponsePayload = {
+    iss: ResponseIss.SELF_ISSUED_V2_OIDC_VC,
     sub: resOpts.did,
-    aud: verifiedJwt.payload.redirect_uri,
-    did: resOpts.did,
-    sub_type: supportedDidMethods.length && resOpts.did ? SubjectIdentifierType.DID : SubjectIdentifierType.JKT,
-    state,
+    //aud: verifiedJwt.payload.redirect_uri,
+    aud: verifiedJwt.payload.client_id,
+    //did: resOpts.did,
+    //sub_type: supportedDidMethods.length && resOpts.did ? SubjectIdentifierType.DID : SubjectIdentifierType.JKT,
+    //state,
     nonce,
-    iat: Date.now() / 1000,
-    exp: Date.now() / 1000 + (resOpts.expiresIn || 600),
-    registration,
-    vp_token,
-    verifiable_presentations,
+    iat: Math.round(Date.now() / 1000),
+    exp: Math.round(Date.now() / 1000 + (resOpts.expiresIn || 600)),
+    //registration,
+    //vp_token,
+    _vp_token: { presentation_submission },
+    //verifiable_presentations,
+    sub_jwk: undefined,
   };
   if (supportedDidMethods.indexOf(SubjectSyntaxTypesSupportedValues.JWK_THUMBPRINT) != -1 && !resOpts.did) {
     const { thumbprint, subJwk } = await createThumbprintAndJWK(resOpts);
@@ -302,35 +332,35 @@ function assertValidVerifyOpts(opts: VerifyAuthenticationResponseOpts) {
   }
 }
 
-async function assertValidVerifiablePresentations(definitions: PresentationDefinitionWithLocation[], verPayload: AuthenticationResponsePayload) {
-  if ((!definitions || definitions.length == 0) && !verPayload) {
-    return;
-  }
+// async function assertValidVerifiablePresentations(definitions: PresentationDefinitionWithLocation[], verPayload: AuthenticationResponsePayload) {
+//   if ((!definitions || definitions.length == 0) && !verPayload) {
+//     return;
+//   }
 
-  // const definitions: PresentationDefinitionWithLocation[] = verifyOpts?.claims?.presentationDefinitions;
-  PresentationExchange.assertValidPresentationDefinitionWithLocations(definitions);
-  let presentationPayloads: VerifiablePresentationPayload[];
+//   // const definitions: PresentationDefinitionWithLocation[] = verifyOpts?.claims?.presentationDefinitions;
+//   PresentationExchange.assertValidPresentationDefinitionWithLocations(definitions);
+//   let presentationPayloads: VerifiablePresentationPayload[];
 
-  if (verPayload.verifiable_presentations && verPayload.verifiable_presentations.length > 0) {
-    presentationPayloads = verPayload.verifiable_presentations;
-  }
-  if (verPayload.vp_token) {
-    if (!presentationPayloads) {
-      presentationPayloads = [verPayload.vp_token];
-    } else {
-      presentationPayloads.push(verPayload.vp_token);
-    }
-  }
+//   if (verPayload.verifiable_presentations && verPayload.verifiable_presentations.length > 0) {
+//     presentationPayloads = verPayload.verifiable_presentations;
+//   }
+//   if (verPayload.vp_token) {
+//     if (!presentationPayloads) {
+//       presentationPayloads = [verPayload.vp_token];
+//     } else {
+//       presentationPayloads.push(verPayload.vp_token);
+//     }
+//   }
 
-  /*console.log('pd:', JSON.stringify(definitions));
-  console.log('vps:', JSON.stringify(presentationPayloads));*/
-  if (definitions && definitions.length && !presentationPayloads) {
-    throw new Error(SIOPErrors.AUTH_REQUEST_EXPECTS_VP);
-  } else if (!definitions && presentationPayloads) {
-    throw new Error(SIOPErrors.AUTH_REQUEST_DOESNT_EXPECT_VP);
-  } else if (definitions && presentationPayloads && definitions.length != presentationPayloads.length) {
-    throw new Error(SIOPErrors.AUTH_REQUEST_EXPECTS_VP);
-  } else if (definitions && presentationPayloads) {
-    await PresentationExchange.validatePayloadsAgainstDefinitions(definitions, presentationPayloads);
-  }
-}
+//   /*console.log('pd:', JSON.stringify(definitions));
+//   console.log('vps:', JSON.stringify(presentationPayloads));*/
+//   if (definitions && definitions.length && !presentationPayloads) {
+//     throw new Error(SIOPErrors.AUTH_REQUEST_EXPECTS_VP);
+//   } else if (!definitions && presentationPayloads) {
+//     throw new Error(SIOPErrors.AUTH_REQUEST_DOESNT_EXPECT_VP);
+//   } else if (definitions && presentationPayloads && definitions.length != presentationPayloads.length) {
+//     throw new Error(SIOPErrors.AUTH_REQUEST_EXPECTS_VP);
+//   } else if (definitions && presentationPayloads) {
+//     await PresentationExchange.validatePayloadsAgainstDefinitions(definitions, presentationPayloads);
+//   }
+// }

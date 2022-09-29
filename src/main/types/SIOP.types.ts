@@ -355,13 +355,13 @@ export interface RPRegistrationMetadataOpts {
 }
 
 export interface RPRegistrationMetadataPayload {
-  id_token_signing_alg_values_supported: SigningAlgo[];
+  id_token_signing_alg_values_supported?: SigningAlgo[];
   id_token_types_supported?: IdTokenType[];
-  request_object_signing_alg_values_supported: SigningAlgo[];
-  response_types_supported: ResponseType[];
-  scopes_supported: Scope[];
+  request_object_signing_alg_values_supported?: SigningAlgo[];
+  response_types_supported?: ResponseType[];
+  scopes_supported?: Scope[];
   subject_syntax_types_supported: string[];
-  subject_types_supported: SubjectType[];
+  subject_types_supported?: SubjectType[];
   vp_formats: Format;
   client_name: string;
 }
@@ -651,7 +651,7 @@ export const isRequestPayload = (object: AuthenticationRequestPayload | Authenti
   'response_mode' in object && 'response_type' in object;
 
 export const isResponsePayload = (object: AuthenticationRequestPayload | AuthenticationResponsePayload): object is AuthenticationResponsePayload =>
-  'iss' in object && 'aud' in object;
+  'iss' in object && 'aud' in object && '_vp_token' in object;
 
 export const isInternalVerification = (object: InternalVerification | ExternalVerification): object is InternalVerification =>
   object.mode === VerificationMode.INTERNAL; /* && !isExternalVerification(object)*/

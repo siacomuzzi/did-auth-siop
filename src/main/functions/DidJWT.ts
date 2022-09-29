@@ -80,12 +80,12 @@ export async function createDidJWT(
 }
 
 export async function signDidJwtPayload(
-  payload: AuthenticationRequestPayload | AuthenticationResponsePayload,
-  opts: AuthenticationRequestOpts | AuthenticationResponseOpts
+  payload: AuthenticationRequestPayload | AuthenticationResponsePayload | any,
+  opts: AuthenticationRequestOpts | AuthenticationResponseOpts | any
 ) {
   const isResponse = isResponseOpts(opts) || isResponsePayload(payload);
   if (isResponse) {
-    if (!payload.iss || payload.iss !== ResponseIss.SELF_ISSUED_V2) {
+    if (!payload.iss || (payload.iss !== ResponseIss.SELF_ISSUED_V2 && payload.iss !== ResponseIss.SELF_ISSUED_V2_OIDC_VC)) {
       throw new Error(SIOPErrors.NO_SELFISSUED_ISS);
     }
   }

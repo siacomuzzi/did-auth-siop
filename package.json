@@ -22,7 +22,8 @@
     "test:prettier": "prettier \"{src,test}/**/*.ts\" --list-different",
     "test:cov": "jest --ci --coverage && codecov",
     "uninstall": "rimraf dist coverage node_modules",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "prepack": "npm run build"
   },
   "engines": {
     "node": ">=14"

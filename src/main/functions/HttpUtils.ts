@@ -21,17 +21,21 @@ export async function postWithBearerToken(url: string, body: JWTPayload, bearerT
 }
 
 export async function postAuthenticationResponse(url: string, body: AuthenticationResponseWithJWT): Promise<Response> {
-  return postAuthenticationResponseJwt(url, body.jwt);
+  return postAuthenticationResponseJwt(url, body.jwt, '', '');
 }
 
-export async function postAuthenticationResponseJwt(url: string, jwt: string): Promise<Response> {
+export async function postAuthenticationResponseJwt(url: string, id_token: string, vp_token: string, state: string): Promise<Response> {
   try {
+    const body = new URLSearchParams();
+    body.append('state', state);
+    body.append('id_token', id_token);
+    body.append('vp_token', vp_token);
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
-      body: `id_token=${jwt}`,
+      body: body.toString(),
     });
     if (!response || !response.status || response.status < 200 || response.status >= 400) {
       throw new Error(`${SIOPErrors.RESPONSE_STATUS_UNEXPECTED} ${response.status}:${response.statusText}, ${await response.text()}`);

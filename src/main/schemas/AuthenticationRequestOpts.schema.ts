@@ -879,14 +879,15 @@ export const AuthenticationRequestOptsSchema = {
         "vpFormatsSupported": {
           "$ref": "#/definitions/Format"
         },
-        "registrationBy": {
-          "$ref": "#/definitions/RegistrationType"
-        },
         "clientName": {
           "type": "string"
+        },
+        "registrationBy": {
+          "$ref": "#/definitions/RegistrationType"
         }
       },
       "required": [
+        "clientName",
         "registrationBy"
       ],
       "additionalProperties": false

@@ -10,7 +10,7 @@ export function bytesToHexString(bytes: Uint8Array): string {
 }
 
 export function decodeUriAsJson(uri: string) {
-  if (!uri || !uri.includes('openid')) {
+  if (!uri) {
     throw new Error(SIOPErrors.BAD_PARAMS);
   }
   const parts = parse(uri);
