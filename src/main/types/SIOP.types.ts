@@ -352,6 +352,7 @@ export interface RPRegistrationMetadataOpts {
   // didMethodsSupported?: string[] | string;
   // credentialFormatsSupported: CredentialFormat[] | CredentialFormat;
   clientName: string;
+  clientPurpose: string;
 }
 
 export interface RPRegistrationMetadataPayload {
@@ -364,6 +365,7 @@ export interface RPRegistrationMetadataPayload {
   subject_types_supported?: SubjectType[];
   vp_formats: Format;
   client_name: string;
+  client_purpose: string;
 }
 
 export interface CommonSupportedMetadata {
