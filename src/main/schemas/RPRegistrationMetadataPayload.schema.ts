@@ -52,6 +52,9 @@ export const RPRegistrationMetadataPayloadSchema = {
         },
         "client_name": {
           "type": "string"
+        },
+        "client_purpose": {
+          "type": "string"
         }
       },
       "required": [
