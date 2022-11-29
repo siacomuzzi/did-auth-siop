@@ -211,7 +211,9 @@ export class PresentationExchange {
 
   private static assertValidPresentationDefinition(presentationDefinition: IPresentationDefinition) {
     const validationResult = new PEX().validateDefinition(presentationDefinition);
-    if (validationResult[0].message != 'ok') {
+    // TODO: fix this in PEX library, according to the spec, `schema.uri` can be any kind of string
+    // See https://identity.foundation/presentation-exchange/spec/v1.0.0/#json-schema-2
+    if (validationResult[0].message != 'ok' && validationResult[0].message != 'schema should have valid URI') {
       throw new Error(`${SIOPErrors.REQUEST_CLAIMS_PRESENTATION_DEFINITION_NOT_VALID}`);
     }
   }

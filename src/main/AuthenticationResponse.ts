@@ -158,7 +158,7 @@ function assertValidResponseJWT(opts: { header: JWTHeader; payload?: JWTPayload;
     throw new Error(SIOPErrors.BAD_PARAMS);
   }
   if (opts.payload) {
-    if (opts.payload.iss !== ResponseIss.SELF_ISSUED_V2) {
+    if (opts.payload.iss !== ResponseIss.SELF_ISSUED_V2 && opts.payload.iss !== ResponseIss.SELF_ISSUED_V2_VC_INTEROP) {
       throw new Error(`${SIOPErrors.NO_SELFISSUED_ISS}, got: ${opts.payload.iss}`);
     }
   }

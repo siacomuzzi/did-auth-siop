@@ -703,6 +703,7 @@ export enum Schema {
 export enum ResponseIss {
   SELF_ISSUED_V1 = 'https://self-issued.me',
   SELF_ISSUED_V2 = 'https://self-issued.me/v2',
+  SELF_ISSUED_V2_VC_INTEROP = 'https://self-issued.me/v2/openid-vc',
 }
 
 export const isInternalSignature = (object: InternalSignature | ExternalSignature | SuppliedSignature | NoSignature): object is InternalSignature =>

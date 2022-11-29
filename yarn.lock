@@ -1659,23 +1659,22 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sphereon/did-uni-client@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-uni-client/-/did-uni-client-0.4.0.tgz#1a4c4302c3ad6714e23aa07adf8154a81c1968dd"
-  integrity sha512-PJr0xi46iEMtQ7vJW6rAoc2T+gPT8P7q0FjVcOVI3l8so4XJ+iY+wkeF2osEFGmjVS/Q76uhcDCBXTXxPDFdcQ==
+"@sphereon/did-uni-client@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-uni-client/-/did-uni-client-0.5.0.tgz#c3a3fb795959ae34f2d3cf3a0f5f485e13b22bd4"
+  integrity sha512-0PVGtonogsAIcBLUrcL3SgkyA8xum3V0kPu643h+PyOMrKPUSEgrDkDRaKuR+zoGZp5AS58044ENKRUzWIc8bg==
   dependencies:
-    cross-fetch "^3.1.4"
-    did-resolver "^3.1.5"
+    cross-fetch "^3.1.5"
+    did-resolver "^4.0.1"
 
 "@sphereon/pex-models@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-1.1.0.tgz#716898344fd07400bbffaa0c34a1f7ecdda14166"
   integrity sha512-kMslWspdqwuXGBFxOPXTAK8HlIHycBR/locYHMlYmyvdnau6bp40JXk2zviBRVOPfe8N3Dv2p5IPAjMk3pT77A==
 
-"@sphereon/pex@^2.0.0-unstable.3":
+"@sphereon/pex@github:siacomuzzi/pex#feature/v2":
   version "2.0.0-unstable.3"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.0-unstable.3.tgz#44b85402dcadc967ecc155a6f4c8801a7ca7033a"
-  integrity sha512-K3uApGXX++aZJrPc7fLb0ureEA9j6OR1c8kh1S4WVfU0Fgihmz1/o2bcKvnD0/OKLNGJYzuyjsdwpXKeGa7uAg==
+  resolved "https://codeload.github.com/siacomuzzi/pex/tar.gz/cabce560d0f97e8c2b3ad62c4ccc2ca28bab19d1"
   dependencies:
     "@sphereon/pex-models" "^1.1.0"
     "@sphereon/ssi-types" "^0.8.1-next.31"
@@ -1686,14 +1685,14 @@
     nanoid "^3.3.4"
     string.prototype.matchall "^4.0.7"
 
-"@sphereon/ssi-types@0.8.1-next.31":
-  version "0.8.1-next.31"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.8.1-next.31.tgz#80d8bddb54f537734c942c5d922856c72dd6a387"
-  integrity sha512-+EPLFGbySIPdQZ5Hu1XBnfKH7Do5IFPkItJuI99VIzGy4hhNil0X5dz3CVMaFMPYjlBe/eUliYItovNb26Vh8Q==
+"@sphereon/ssi-types@0.8.1-unstable.86", "@sphereon/ssi-types@^0.8.1-next.31":
+  version "0.8.1-unstable.86"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.8.1-unstable.86.tgz#3e465ca32170aea52ad0a4fa2035a6480974b598"
+  integrity sha512-iFmPg5ohqw1FCI3R3Vn8MO32SDk9aKfFRYWsZ4U3FSrR0rR1uDldNTlNa5KtE9KJziOOl5BsMLdNNJ9L/mNzkA==
   dependencies:
     jwt-decode "^3.1.2"
 
-"@sphereon/ssi-types@^0.8.1-next.3", "@sphereon/ssi-types@^0.8.1-next.31":
+"@sphereon/ssi-types@^0.8.1-next.3":
   version "0.8.1-unstable.30"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.8.1-unstable.30.tgz#7cd33d13a1170bfec345c3354b8e113efa30c836"
   integrity sha512-AtDaUa1AO4AmVf55nnssDINOKLr2BDnyOQKSGe8GkE7vAAvTJJX4d/CJAx5o7HEqyofJ2A+jAqnNkY5avokChg==
@@ -2179,7 +2178,17 @@ ajv@^6.10.0, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.0, ajv@^8.11.0:
+ajv@^8.0.0:
+  version "8.11.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.2.tgz#aecb20b50607acf2569b6382167b65a96008bb78"
+  integrity sha512-E4bfmKAhGiSTvMfL1Myyycaub+cUEU2/IvpylXkUu7CHBkBj1f/ikdzbD7YQ6FKUbixDxeYvB/xY4fvyroDlQg==
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    json-schema-traverse "^1.0.0"
+    require-from-string "^2.0.2"
+    uri-js "^4.2.2"
+
+ajv@^8.11.0:
   version "8.11.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
   integrity sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==
@@ -2800,7 +2809,7 @@ credentials-context@^2.0.0:
   resolved "https://registry.yarnpkg.com/credentials-context/-/credentials-context-2.0.0.tgz#68a9a1a88850c398d3bba4976c8490530af093e8"
   integrity sha512-/mFKax6FK26KjgV2KW2D4YqKgoJ5DVJpNt87X2Jc9IxT2HBMy7nEIlc+n7pEi+YFFe721XqrvZPd+jbyyBjsvQ==
 
-cross-fetch@^3.1.4, cross-fetch@^3.1.5:
+cross-fetch@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
@@ -3021,10 +3030,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-did-jwt@6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/did-jwt/-/did-jwt-6.2.0.tgz#5c4009871ad1ad85ec80c14c501a52991a16e7a1"
-  integrity sha512-BokZHvwStx4K5s3a/0TXs649b1Tjl5S9X4X80gQjdkQFlg33Z0qh/DTfctDI8dWyapMR69yUPtMlLdDxwWQEQQ==
+did-jwt@^6.10.1:
+  version "6.10.1"
+  resolved "https://registry.yarnpkg.com/did-jwt/-/did-jwt-6.10.1.tgz#40966b86b18759b771186d9274fc211af2f64d7c"
+  integrity sha512-YJOvkuPKKX364ooAFNxZPcz/KBLRwLhRABQVQlVEqOjygsCkplNFB3UL97UqZ7Y3cAG6Jh5jKoAC4xFSm+h0qw==
   dependencies:
     "@stablelib/ed25519" "^1.0.2"
     "@stablelib/random" "^1.0.1"
@@ -3033,16 +3042,16 @@ did-jwt@6.2.0:
     "@stablelib/xchacha20poly1305" "^1.0.1"
     bech32 "^2.0.0"
     canonicalize "^1.0.8"
-    did-resolver "^3.2.2"
+    did-resolver "^4.0.0"
     elliptic "^6.5.4"
     js-sha3 "^0.8.0"
     multiformats "^9.6.5"
     uint8arrays "^3.0.0"
 
-did-resolver@3.2.2, did-resolver@^3.1.5, did-resolver@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/did-resolver/-/did-resolver-3.2.2.tgz#6f4e252a810f785d1b28a10265fad6dffee25158"
-  integrity sha512-Eeo2F524VM5N3W4GwglZrnul2y6TLTwMQP3In62JdG34NZoqihYyOZLk+5wUW8sSgvIYIcJM8Dlt3xsdKZZ3tg==
+did-resolver@^4.0.0, did-resolver@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/did-resolver/-/did-resolver-4.0.1.tgz#11bb3f19ed1c8f53f4af4702912fa9f7852fc305"
+  integrity sha512-eHs2VLKhcANmh08S87PKvOauIAmSOd7nb7AlhNxcvOyDAIGQY1UfbiqI1VOW5IDKvOO6aEWY+5edOt1qrCp1Eg==
 
 diff-sequences@^28.1.1:
   version "28.1.1"
@@ -3160,7 +3169,7 @@ error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-abstract@^1.19.0, es-abstract@^1.19.1, es-abstract@^1.19.2, es-abstract@^1.19.5:
+es-abstract@^1.19.0, es-abstract@^1.19.1, es-abstract@^1.19.2, es-abstract@^1.19.5, es-abstract@^1.20.4:
   version "1.20.4"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.20.4.tgz#1d103f9f8d78d4cf0713edcd6d0ed1a46eed5861"
   integrity sha512-0UtvRN79eMe2L+UNEF1BwRe364sj/DXhQ/k5FmivgoSdpM90b8Jc0mDzKMGo7QS0BVbOP/bTwBKNnDc9rNzaPA==
@@ -5539,7 +5548,7 @@ regenerator-runtime@^0.13.4:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.10.tgz#ed07b19616bcbec5da6274ebc75ae95634bfc2ee"
   integrity sha512-KepLsg4dU12hryUO7bp/axHAKvwGOCV0sGloQtpagJ12ai+ojVDqkeGSiRX1zlq+kjIMZ1t7gpze+26QqtdGqw==
 
-regexp.prototype.flags@^1.4.1, regexp.prototype.flags@^1.4.3:
+regexp.prototype.flags@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/regexp.prototype.flags/-/regexp.prototype.flags-1.4.3.tgz#87cab30f80f66660181a3bb7bf5981a872b367ac"
   integrity sha512-fjggEOO3slI6Wvgjwflkc4NFRCTZAu5CnNfBd5qOMYhWdn67nJBBu34/TkD++eeFmd8C9r9jfXJ27+nSiRkSUA==
@@ -5865,17 +5874,17 @@ string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
     strip-ansi "^6.0.1"
 
 string.prototype.matchall@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/string.prototype.matchall/-/string.prototype.matchall-4.0.7.tgz#8e6ecb0d8a1fb1fda470d81acecb2dba057a481d"
-  integrity sha512-f48okCX7JiwVi1NXCVWcFnZgADDC/n2vePlQ/KUCNqCikLLilQvwjMO8+BHVKvgzH0JB0J9LEPgxOGT02RoETg==
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/string.prototype.matchall/-/string.prototype.matchall-4.0.8.tgz#3bf85722021816dcd1bf38bb714915887ca79fd3"
+  integrity sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg==
   dependencies:
     call-bind "^1.0.2"
-    define-properties "^1.1.3"
-    es-abstract "^1.19.1"
-    get-intrinsic "^1.1.1"
+    define-properties "^1.1.4"
+    es-abstract "^1.20.4"
+    get-intrinsic "^1.1.3"
     has-symbols "^1.0.3"
     internal-slot "^1.0.3"
-    regexp.prototype.flags "^1.4.1"
+    regexp.prototype.flags "^1.4.3"
     side-channel "^1.0.4"
 
 string.prototype.padend@^3.0.0:

@@ -1169,7 +1169,8 @@ export const DiscoveryMetadataPayloadSchema = {
       "type": "string",
       "enum": [
         "https://self-issued.me",
-        "https://self-issued.me/v2"
+        "https://self-issued.me/v2",
+        "https://self-issued.me/v2/openid-vc"
       ]
     },
     "ResponseType": {
