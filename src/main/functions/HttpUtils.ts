@@ -24,14 +24,18 @@ export async function postAuthenticationResponse(url: string, body: Authenticati
   return postAuthenticationResponseJwt(url, body.jwt);
 }
 
-export async function postAuthenticationResponseJwt(url: string, jwt: string): Promise<Response> {
+export async function postAuthenticationResponseJwt(url: string, idToken: string, vpToken?: string, state?: string): Promise<Response> {
   try {
+    let body = `id_token=${idToken}`;
+    if (vpToken) { body += `&vp_token=${vpToken}`; }
+    if (state) { body += `&state=${state}`; }
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
-      body: `id_token=${jwt}`,
+      body,
     });
     if (!response || !response.status || response.status < 200 || response.status >= 400) {
       throw new Error(`${SIOPErrors.RESPONSE_STATUS_UNEXPECTED} ${response.status}:${response.statusText}, ${await response.text()}`);

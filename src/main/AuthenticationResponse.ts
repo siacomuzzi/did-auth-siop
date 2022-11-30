@@ -12,6 +12,7 @@ import {
   getSubDidFromPayload,
   getThumbprint,
   parseJWT,
+  signDidJwtInternal,
   signDidJwtPayload,
   validateLinkedDomainWithDid,
   verifyDidJWT,
@@ -70,6 +71,13 @@ export default class AuthenticationResponse {
     responseOpts: AuthenticationResponseOpts
   ): Promise<AuthenticationResponseWithJWT> {
     const payload = await createSIOPResponsePayload(verifiedJwt, responseOpts);
+
+    // review: add presentation_submission as part of `id_token._vp_token`
+    const presentation = Array.isArray(payload.vp_token) ? payload.vp_token[0].presentation : payload.vp_token.presentation;
+    if (!responseOpts._vp_token && presentation && presentation.presentation_submission) {
+      responseOpts._vp_token = { presentation_submission: presentation.presentation_submission };
+    }
+
     const idToken = await createSIOPIDToken(verifiedJwt, responseOpts);
     payload.id_token = await signDidJwtPayload(idToken, responseOpts);
     await assertValidVerifiablePresentations({
@@ -78,8 +86,30 @@ export default class AuthenticationResponse {
       presentationVerificationCallback: responseOpts.presentationVerificationCallback,
     });
 
+    // review: generate jwt vp token
+    const vpTokenPayload = {
+        nonce: idToken.nonce,
+        aud: idToken.aud,
+        iss: responseOpts.did,
+        iat: Date.now() / 1000,
+        exp: Date.now() / 1000 + (responseOpts.expiresIn || 600),
+        vp: {
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            type: ['VerifiablePresentation'],
+            verifiableCredential: presentation.verifiableCredential,
+        }
+    };
+
+    if (!isInternalSignature(responseOpts.signatureType)) {
+      throw new Error('missing internal singature');
+    }
+
+    const vpTokenJwt = await signDidJwtInternal(vpTokenPayload, responseOpts.signatureType.did, responseOpts.signatureType.hexPrivateKey, responseOpts.signatureType.kid);
+
     return {
+      redirectUri: verifiedJwt.payload.redirect_uri,
       jwt: payload.id_token,
+      vpTokenJwt,
       state: payload.state,
       nonce: idToken.nonce,
       idToken,
@@ -238,8 +268,8 @@ async function createSIOPIDToken(verifiedJwt: VerifiedAuthenticationRequestWithJ
   const state = resOpts.state || getState(verifiedJwt.payload.state);
   const nonce = verifiedJwt.payload.nonce || resOpts.nonce || getNonce(state);
   const idToken: IdTokenPayload = {
-    iss: ResponseIss.SELF_ISSUED_V2,
-    aud: verifiedJwt.payload.redirect_uri,
+    iss: resOpts.registration.issuer || ResponseIss.SELF_ISSUED_V2,
+    aud: verifiedJwt.issuer,
     iat: Date.now() / 1000,
     exp: Date.now() / 1000 + (resOpts.expiresIn || 600),
     sub: resOpts.did,

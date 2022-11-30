@@ -80,7 +80,7 @@ export async function signDidJwtPayload(
 ) {
   const isResponse = isResponseOpts(opts) || isResponsePayload(payload);
   if (isResponse) {
-    if (!payload.iss || payload.iss !== ResponseIss.SELF_ISSUED_V2) {
+    if (!payload.iss  || [ResponseIss.SELF_ISSUED_V2, ResponseIss.SELF_ISSUED_V2_VC_INTEROP].indexOf(payload.iss) < 0) {
       throw new Error(SIOPErrors.NO_SELFISSUED_ISS);
     }
   }
@@ -95,7 +95,7 @@ export async function signDidJwtPayload(
   }
 }
 
-async function signDidJwtInternal(
+export async function signDidJwtInternal(
   payload: IdTokenPayload | AuthenticationRequestPayload,
   issuer: string,
   hexPrivateKey: string,

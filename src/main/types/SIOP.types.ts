@@ -242,6 +242,8 @@ export interface AuthenticationResponseWithJWT {
   payload: AuthenticationResponsePayload;
   verifyOpts?: VerifyAuthenticationRequestOpts;
   responseOpts: AuthenticationResponseOpts;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [x: string]: any;
 }
 
 interface DiscoveryMetadataCommonOpts {
