@@ -425,18 +425,20 @@ export type RPRegistrationMetadataOpts = Pick<
 
 export type RPRegistrationMetadataPayload = Pick<
   DiscoveryMetadataPayload,
-  | 'client_id'
-  | 'id_token_signing_alg_values_supported'
-  | 'request_object_signing_alg_values_supported'
-  | 'response_types_supported'
-  | 'scopes_supported'
-  | 'subject_types_supported'
   | 'subject_syntax_types_supported'
   | 'vp_formats'
-  | 'client_name'
-  | 'logo_uri'
-  | 'client_purpose'
-> & {
+> & Partial<Pick<
+DiscoveryMetadataPayload,
+| 'client_id'
+| 'id_token_signing_alg_values_supported'
+| 'request_object_signing_alg_values_supported'
+| 'response_types_supported'
+| 'scopes_supported'
+| 'subject_types_supported'
+| 'client_name'
+| 'logo_uri'
+| 'client_purpose'
+>> & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
 };

@@ -78,20 +78,6 @@ export const RPRegistrationMetadataPayloadSchema = {
             }
           ]
         },
-        "subject_syntax_types_supported": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "vp_formats": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Format"
-            },
-            {}
-          ]
-        },
         "client_name": {
           "anyOf": [
             {
@@ -115,15 +101,24 @@ export const RPRegistrationMetadataPayloadSchema = {
               "type": "string"
             }
           ]
+        },
+        "subject_syntax_types_supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vp_formats": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Format"
+            },
+            {}
+          ]
         }
       },
       "required": [
-        "client_id",
-        "id_token_signing_alg_values_supported",
-        "response_types_supported",
-        "scopes_supported",
         "subject_syntax_types_supported",
-        "subject_types_supported",
         "vp_formats"
       ]
     },
