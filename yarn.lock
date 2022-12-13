@@ -3030,10 +3030,10 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-did-jwt@^6.10.1:
-  version "6.10.1"
-  resolved "https://registry.yarnpkg.com/did-jwt/-/did-jwt-6.10.1.tgz#40966b86b18759b771186d9274fc211af2f64d7c"
-  integrity sha512-YJOvkuPKKX364ooAFNxZPcz/KBLRwLhRABQVQlVEqOjygsCkplNFB3UL97UqZ7Y3cAG6Jh5jKoAC4xFSm+h0qw==
+did-jwt@^6.11.0:
+  version "6.11.0"
+  resolved "https://registry.yarnpkg.com/did-jwt/-/did-jwt-6.11.0.tgz#19191a2a0c8bd513d6383afe94456ae84e0fa5bd"
+  integrity sha512-/qyYzo8v/xjwyt5x3tbknjQ2L15J1JzB+0cQK5/2SgnoOoclOmtEgZoRaxG1B73VMOgyZQYLBytRT4COUVhcpw==
   dependencies:
     "@stablelib/ed25519" "^1.0.2"
     "@stablelib/random" "^1.0.1"
