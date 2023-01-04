@@ -139,6 +139,10 @@ export default class AuthenticationResponse {
       audience: verifyOpts.audience,
     });
 
+    if (payload.sub !== verifiedJWT.didResolutionResult.didDocument.id) {
+      throw new Error('The ID Token sub claim must be equal to the value of the id property in the DID Document');
+    }
+
     const issuerDid = getSubDidFromPayload(payload);
     if (verifyOpts.verification.checkLinkedDomain && verifyOpts.verification.checkLinkedDomain !== CheckLinkedDomain.NEVER) {
       await validateLinkedDomainWithDid(issuerDid, verifyOpts.verifyCallback, verifyOpts.verification.checkLinkedDomain);
@@ -191,6 +195,10 @@ function assertValidResponseJWT(opts: { header: JWTHeader; payload?: JWTPayload;
     if (opts.payload.iss !== ResponseIss.SELF_ISSUED_V2 && opts.payload.iss !== ResponseIss.SELF_ISSUED_V2_VC_INTEROP) {
       throw new Error(`${SIOPErrors.NO_SELFISSUED_ISS}, got: ${opts.payload.iss}`);
     }
+
+    if (opts.payload.sub !== opts.header.kid.split('#')[0]) {
+      throw new Error('DID value in the ID Token kid and sub claims must exactly match');
+    }
   }
 
   if (opts.verPayload) {
@@ -206,6 +214,10 @@ function assertValidResponseJWT(opts: { header: JWTHeader; payload?: JWTPayload;
       throw Error(SIOPErrors.BAD_PARAMS);
     } else if (opts.audience && opts.audience != opts.verPayload.aud) {
       throw Error(SIOPErrors.INVALID_AUDIENCE);
+    }
+
+    if (!opts.verPayload._vp_token?.presentation_submission) {
+      throw Error('ID Token _vp_token claim must contain a presentation_submission with a valid descriptor map');
     }
   }
 }
