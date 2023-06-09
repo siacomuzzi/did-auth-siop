@@ -135,9 +135,9 @@ export default class AuthenticationRequest {
     }
     if (verPayload.client_id.startsWith('did:')) {
       if (opts.verification.checkLinkedDomain && opts.verification.checkLinkedDomain != CheckLinkedDomain.NEVER) {
-        await validateLinkedDomainWithDid(verPayload.client_id, opts.verifyCallback, opts.verification.checkLinkedDomain);
+        await validateLinkedDomainWithDid(verPayload.client_id, opts.verifyCallback, opts.verification.checkLinkedDomain, opts.verification.resolveOpts);
       } else if (!opts.verification.checkLinkedDomain) {
-        await validateLinkedDomainWithDid(verPayload.client_id, opts.verifyCallback, CheckLinkedDomain.IF_PRESENT);
+        await validateLinkedDomainWithDid(verPayload.client_id, opts.verifyCallback, CheckLinkedDomain.IF_PRESENT, opts.verification.resolveOpts);
       }
     }
     const presentationDefinitions = await PresentationExchange.findValidPresentationDefinitions(payload);

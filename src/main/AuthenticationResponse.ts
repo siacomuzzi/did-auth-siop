@@ -145,9 +145,9 @@ export default class AuthenticationResponse {
 
     const issuerDid = getSubDidFromPayload(payload);
     if (verifyOpts.verification.checkLinkedDomain && verifyOpts.verification.checkLinkedDomain !== CheckLinkedDomain.NEVER) {
-      await validateLinkedDomainWithDid(issuerDid, verifyOpts.verifyCallback, verifyOpts.verification.checkLinkedDomain);
+      await validateLinkedDomainWithDid(issuerDid, verifyOpts.verifyCallback, verifyOpts.verification.checkLinkedDomain, verifyOpts.verification.resolveOpts);
     } else if (!verifyOpts.verification.checkLinkedDomain) {
-      await validateLinkedDomainWithDid(issuerDid, verifyOpts.verifyCallback, CheckLinkedDomain.IF_PRESENT);
+      await validateLinkedDomainWithDid(issuerDid, verifyOpts.verifyCallback, CheckLinkedDomain.IF_PRESENT, verifyOpts.verification.resolveOpts);
     }
     const verPayload = verifiedJWT.payload as IdTokenPayload;
     assertValidResponseJWT({ header, verPayload: verPayload, audience: verifyOpts.audience });
